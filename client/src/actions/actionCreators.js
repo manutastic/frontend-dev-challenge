@@ -27,9 +27,9 @@ export const updatePage = (page) => {
     }
 }
 
-export const getProducts = (page) => {
+export const getProducts = (page, numPerPage) => {
     return (dispatch) => {
-        return axios.get(apiUrl+'?page='+page)
+        return axios.get(apiUrl+'?page='+ page + '&numPerPage=' + numPerPage)
         .then(res => {
             dispatch(handleGetProducts(res.data))
         })

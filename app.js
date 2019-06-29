@@ -10,9 +10,8 @@ app.use(bodyParser.json());
 app.use(cors());
 
 app.get("/phones", (req, res, next) => {
-    if (req.query.page) {
-        console.log(req.query.page);
-        res.json(data.slice(0, req.query.page * 6));
+    if (req.query.page && req.query.numPerPage) {
+        res.json(data.slice(0, req.query.page * req.query.numPerPage));
     }else{
         res.json(data);
     }

@@ -11,7 +11,10 @@ class PhoneListContainer extends Component {
     constructor(props) {
         super(props);
         this.selectedItem = 0;
+        this.numPerPage = 6;
+
         this.toggleDetails = this.toggleDetails.bind(this);
+        this.updateProducts = this.updateProducts.bind(this);
         this.nextPage = this.nextPage.bind(this);
 
         window.onscroll = debounce(() => {
@@ -23,11 +26,8 @@ class PhoneListContainer extends Component {
         }, 100);
     }
 
-    getParams(location) {
-        const params = new URLSearchParams(location.search);
-        return {
-            page: params.get('page') || '',
-        }
+    updateProducts() {
+        this.props.getProducts(this.props.page, this.numPerPage);
     }
 
     componentDidMount() {
@@ -35,7 +35,7 @@ class PhoneListContainer extends Component {
         if (params.page) {
             this.props.updatePage(params.page);
         } else {
-            this.props.getProducts(this.props.page);
+            this.updateProducts();
         }
     }
     
@@ -45,14 +45,15 @@ class PhoneListContainer extends Component {
     }
 
     nextPage() {
+        // Update page state
         let newPageCount = Number(this.props.page) + 1;
         this.props.updatePage(newPageCount);
+        // Update params
         let params = queryString.parse(this.props.location.search);
         params.page = newPageCount;
-        console.log(params.page);
         this.props.history.push({search: queryString.stringify(params)});
-        this.props.getProducts(this.props.page);
-        // this.props.location.search = queryString.stringify(params);
+        
+        this.updateProducts();
     }
     render() {
         let phones = this.props.products.map(phone => (
@@ -73,7 +74,7 @@ class PhoneListContainer extends Component {
                     : null
                 }
                 {phones}
-                <button onClick={this.nextPage}>Load More</button>
+                <button onClick={this.nextPage}>Scroll or Click to Load More</button>
             </div>
         )
     }
