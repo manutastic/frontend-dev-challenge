@@ -8,7 +8,16 @@ This app meets all of the requirements of the challenge, plus infinite scrolling
 ## How to Run
 
 1. Install npm packages:
+
     `npm install`
+    
+    `cd client`
+    
+    `npm install`
+    
 2. Run the server and client concurrently:
+
+    `cd ..`
+    
     `npm run dev`
 
