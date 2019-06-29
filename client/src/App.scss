@@ -1,3 +1,18 @@
+$primary: #e9f0fd;
+$screen-md-max: 790px;
+$screen-sm-max: 600px;
+
+@mixin md {
+    @media (max-width: #{$screen-md-max}) {
+        @content;
+    }
+ }
+@mixin sm {
+    @media (max-width: #{$screen-sm-max}) {
+        @content;
+    }
+ }
+
 * {
     box-sizing: border-box;
 }
@@ -9,11 +24,12 @@ nav {
     }
 }
 .hero {
-    background: #e9f0fd;
+    background: $primary;
     padding: 50px 20px;
     text-align: center;
     .title {
         font-size: 2em;
+        line-height: 1.2;
     }
     .subtitle {
         margin-top: 20px;
@@ -22,10 +38,11 @@ nav {
 .phone-list-container {
     position: relative;
     display: grid;
-    grid-template-columns: repeat( auto-fit, minmax(250px, 1fr) );
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     grid-gap: 50px 20px;
-    margin: 20px;
+    margin: 20px auto;
     margin-bottom: 40px;
+    max-width: 790px;
     .phone {
         position: relative;
         padding: 50px;
@@ -57,19 +74,70 @@ nav {
         height: 100%;
         top: 0;
         left: 0;
-        background-color: rgba(233, 240, 253, .4);
+        background-color: rgba($primary, .8);
         z-index: 1;
         .inner{
             position: absolute;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            @include sm {
+                grid-template-columns: 1fr;
+                grid-template-rows: 2fr 1fr;
+                padding-top: 50px;
+            }
             left: 25%;
             right: 25%;
             top: 25%;
             bottom: 25%;
+            @include md {
+                left: 5%;
+                right: 5%;
+                top: 5%;
+                bottom: 5%;
+            }
             margin: auto;
             padding: 20px;
             border-radius: 5px;
             background: white;
             box-shadow: 0 1px 2px rgba(60, 63, 66, 0.05), 0 4px 15px rgba(60, 63, 66, 0.07);
+            button {
+                background: none;
+                border: none;
+                color: #aaaaaa;
+                position: absolute;
+                font-size: .9em;
+                top: 20px;
+                right: 20px;
+                &:hover {
+                    cursor: pointer;
+                    color:#555555;
+                }
+            }
+            .phone-image {
+                height: 100%;
+                background-size: contain;
+                background-position: center;
+                background-repeat: no-repeat;
+            }
+            .details {
+                padding: 20px;
+                .title {
+                    font-size: 1.5em;
+                    margin-bottom: 10px;
+                }
+                .brand {
+                    color: #555555;
+                }
+                .color {
+                    margin-top: 20px;
+                }
+                .price {
+                    font-size: 1.2em;
+                    margin-top: 20px;
+                    font-weight: 700;
+                }
+            }
         }
     }
 }
+

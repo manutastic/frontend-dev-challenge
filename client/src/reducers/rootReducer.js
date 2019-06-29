@@ -1,8 +1,9 @@
-import {GET_PRODUCTS, TOGGLE_DETAILS} from '../actions/actionCreators';
+import {GET_PRODUCTS, TOGGLE_DETAILS, UPDATE_PAGE} from '../actions/actionCreators';
 
 const initialState = {
     products: [],
-    showDetails: false
+    showDetails: false,
+    page: 1
 }
 
 export default function rootReducer(state = initialState, action) {
@@ -12,6 +13,8 @@ export default function rootReducer(state = initialState, action) {
         case TOGGLE_DETAILS:
             let newState = !state.showDetails;
             return {...state, showDetails: newState}
+        case UPDATE_PAGE:
+            return {...state, page: action.page}
         default:
             return state;
     }

@@ -1,6 +1,7 @@
 import axios from 'axios';
 export const GET_PRODUCTS = 'GET_PRODUCTS';
 export const TOGGLE_DETAILS = 'TOGGLE_DETAILS';
+export const UPDATE_PAGE = 'UPDATE_PAGE'
 
 const apiUrl = 'http://localhost:4000/phones'
 
@@ -17,9 +18,18 @@ export const toggleDetails = () => {
     }
 }
 
-export const getProducts = () => {
+export const updatePage = (page) => {
     return (dispatch) => {
-        return axios.get(apiUrl)
+        dispatch( {
+            type: UPDATE_PAGE,
+            page
+        })
+    }
+}
+
+export const getProducts = (page) => {
+    return (dispatch) => {
+        return axios.get(apiUrl+'?page='+page)
         .then(res => {
             dispatch(handleGetProducts(res.data))
         })

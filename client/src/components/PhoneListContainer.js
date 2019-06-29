@@ -1,6 +1,9 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
-import { getProducts, toggleDetails } from '../actions/actionCreators';
+import queryString from 'query-string';
+import debounce from 'debounce';
+
+import { getProducts, toggleDetails, updatePage } from '../actions/actionCreators';
 import Phone from './Phone';
 import PhoneDetailComponent from './PhoneDetailComponent';
 
@@ -9,14 +12,47 @@ class PhoneListContainer extends Component {
         super(props);
         this.selectedItem = 0;
         this.toggleDetails = this.toggleDetails.bind(this);
-    }
-    componentDidMount() {
-        this.props.getProducts();
+        this.nextPage = this.nextPage.bind(this);
+
+        window.onscroll = debounce(() => {
+            console.log("s");
+            if (window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight - 50) {
+                console.log("scroll");
+                this.nextPage();
+            }
+        }, 100);
     }
 
+    getParams(location) {
+        const params = new URLSearchParams(location.search);
+        return {
+            page: params.get('page') || '',
+        }
+    }
+
+    componentDidMount() {
+        let params = queryString.parse(this.props.location.search);
+        if (params.page) {
+            this.props.updatePage(params.page);
+        } else {
+            this.props.getProducts(this.props.page);
+        }
+    }
+    
     toggleDetails(index) {
         this.selectedItem = index;
         this.props.toggleDetails();
+    }
+
+    nextPage() {
+        let newPageCount = Number(this.props.page) + 1;
+        this.props.updatePage(newPageCount);
+        let params = queryString.parse(this.props.location.search);
+        params.page = newPageCount;
+        console.log(params.page);
+        this.props.history.push({search: queryString.stringify(params)});
+        this.props.getProducts(this.props.page);
+        // this.props.location.search = queryString.stringify(params);
     }
     render() {
         let phones = this.props.products.map(phone => (
@@ -37,6 +73,7 @@ class PhoneListContainer extends Component {
                     : null
                 }
                 {phones}
+                <button onClick={this.nextPage}>Load More</button>
             </div>
         )
     }
@@ -45,8 +82,9 @@ class PhoneListContainer extends Component {
 const mapStateToProps = state => {
     return {
         products: state.products,
-        showDetails: state.showDetails
+        showDetails: state.showDetails,
+        page: state.page
     }
 }
 
-export default connect(mapStateToProps, {getProducts, toggleDetails})(PhoneListContainer);
+export default connect(mapStateToProps, {getProducts, toggleDetails, updatePage})(PhoneListContainer);
