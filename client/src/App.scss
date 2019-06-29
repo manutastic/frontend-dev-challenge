@@ -21,11 +21,15 @@ nav {
     padding: 20px;
     h1 {
         font-size: 1.5em;
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
     }
 }
 .hero {
     background: $primary;
-    padding: 50px 20px;
+    padding: 100px 20px;
     text-align: center;
     .title {
         font-size: 2em;
@@ -40,8 +44,7 @@ nav {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     grid-gap: 50px 20px;
-    margin: 20px auto;
-    margin-bottom: 40px;
+    margin: 40px auto 150px;
     max-width: 790px;
     .phone {
         position: relative;
@@ -137,6 +140,25 @@ nav {
                     font-weight: 700;
                 }
             }
+        }
+    }
+    .lds-dual-ring {
+        position: absolute;
+        bottom: -75px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    button.load-more {
+        position: absolute;
+        width: 100%;
+        bottom: -120px;
+        padding: 10px;
+        background: white;
+        border: 1px solid $primary;
+        transition: background .2s ease;
+        &:hover{
+            background: $primary;
+            cursor: pointer;
         }
     }
 }

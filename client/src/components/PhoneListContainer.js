@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import queryString from 'query-string';
 import debounce from 'debounce';
 
+import '../css/spinner.scss'
+
 import { getProducts, toggleDetails, updatePage } from '../actions/actionCreators';
 import Phone from './Phone';
 import PhoneDetailComponent from './PhoneDetailComponent';
@@ -18,16 +20,16 @@ class PhoneListContainer extends Component {
         this.nextPage = this.nextPage.bind(this);
 
         window.onscroll = debounce(() => {
-            console.log("s");
             if (window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight - 50) {
-                console.log("scroll");
                 this.nextPage();
             }
         }, 100);
     }
 
     updateProducts() {
+        console.log(this.props.isLoading);
         this.props.getProducts(this.props.page, this.numPerPage);
+        console.log(this.props.isLoading);
     }
 
     componentDidMount() {
@@ -52,7 +54,7 @@ class PhoneListContainer extends Component {
         let params = queryString.parse(this.props.location.search);
         params.page = newPageCount;
         this.props.history.push({search: queryString.stringify(params)});
-        
+
         this.updateProducts();
     }
     render() {
@@ -68,13 +70,17 @@ class PhoneListContainer extends Component {
             <div className="phone-list-container">
                 {this.props.showDetails ? 
                     <PhoneDetailComponent
-                        phone={this.props.products[this.selectedItem]}
-                        closeDetails={this.toggleDetails.bind(this)}
+                    phone={this.props.products[this.selectedItem]}
+                    closeDetails={this.toggleDetails.bind(this)}
                     />
                     : null
                 }
                 {phones}
-                <button onClick={this.nextPage}>Scroll or Click to Load More</button>
+                {this.props.isLoading ?
+                    <div className="lds-dual-ring"></div>
+                    : null
+                }
+                <button className="load-more" onClick={this.nextPage}>Scroll or Click to Load More</button>
             </div>
         )
     }
@@ -84,7 +90,8 @@ const mapStateToProps = state => {
     return {
         products: state.products,
         showDetails: state.showDetails,
-        page: state.page
+        page: state.page,
+        isLoading: state.isLoading
     }
 }
 
