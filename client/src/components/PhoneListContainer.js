@@ -35,7 +35,7 @@ class PhoneListContainer extends Component {
     componentDidMount() {
         let params = queryString.parse(this.props.location.search);
         if (params.page) {
-            this.props.updatePage(params.page);
+            this.props.updatePage(Number(params.page), this.numPerPage);
         } else {
             this.updateProducts();
         }
@@ -49,13 +49,11 @@ class PhoneListContainer extends Component {
     nextPage() {
         // Update page state
         let newPageCount = Number(this.props.page) + 1;
-        this.props.updatePage(newPageCount);
+        this.props.updatePage(newPageCount, this.numPerPage);
         // Update params
         let params = queryString.parse(this.props.location.search);
         params.page = newPageCount;
         this.props.history.push({search: queryString.stringify(params)});
-
-        this.updateProducts();
     }
     render() {
         let phones = this.props.products.map(phone => (

@@ -16,9 +16,10 @@ export default function rootReducer(state = initialState, action) {
             return {...state, showDetails: newDetails}
         case TOGGLE_LOADING:
             let newLoading = !state.isLoading;
-            console.log(state.isLoading);
             return {...state, isLoading: newLoading}
         case UPDATE_PAGE:
+            console.log("action: " + action.page);
+            console.log("state: " + state.page)
             return {...state, page: action.page}
         default:
             return state;

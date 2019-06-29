@@ -25,17 +25,17 @@ export const toggleLoading = () => {
     }
 }
 
-export const updatePage = (page) => {
+export const updatePage = (page, numPerPage) => {
     return (dispatch) => {
         dispatch( {
             type: UPDATE_PAGE,
             page
-        })
-    }
+        });
+        dispatch(getProducts(page, numPerPage))
+    };
 }
 
 export const getProducts = (page, numPerPage) => {
-    toggleLoading();
     return (dispatch) => {
         dispatch(toggleLoading());
         return axios.get(apiUrl+'?page='+ page + '&numPerPage=' + numPerPage)

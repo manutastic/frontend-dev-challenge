@@ -29,7 +29,7 @@ nav {
 }
 .hero {
     background: $primary;
-    padding: 100px 20px;
+    padding: 100px 20px 180px;
     text-align: center;
     .title {
         font-size: 2em;
@@ -44,17 +44,24 @@ nav {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     grid-gap: 50px 20px;
-    margin: 40px auto 150px;
+    margin: -80px auto 150px;
     max-width: 790px;
     .phone {
         position: relative;
         padding: 50px;
         margin: 0px;
         padding-top: 45%;
-        border: 1px solid #eee;
+        border: 1px solid $primary;
+        background-color: white;
         background-position: center;
         background-size: contain;
         background-repeat: no-repeat;
+        &:hover {
+            cursor: pointer;
+            .title {
+                background: $primary;
+            }
+        }
         .title {
             position: absolute;
             background: white;
@@ -65,10 +72,11 @@ nav {
             min-width: 70%;
             text-align: center;
             border-radius: 55px;
-            border: 1px solid #eee;
+            border: 1px solid $primary;
             box-shadow: 0 1px 2px rgba(60,63,66,.05), 
                         0 4px 15px rgba(60,63,66,.07);
             font-size: 1.2em;
+            transition: background .2s ease;
         }
     }
     .phone-detail {
